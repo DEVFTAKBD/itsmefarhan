@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive IPTV Player</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            text-align: center;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            background: #000;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            width: calc(100% - 24px);
+            max-width: 800px;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+            margin-top: 10px;
+        }
+        @media (max-width: 768px) {
+            video {
+                max-height: 50vh;
+            }
+            button {
+                width: 100%;
+                max-width: 800px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Responsive IPTV Player</h1>
+        <p>Enter your IPTV stream URL below:</p>
+        <input type="text" id="iptv-url" placeholder="Enter your IPTV .m3u8 URL">
+        <button onclick="playIPTV()">Play</button>
+        <video id="iptv-video" controls></video>
+        <div id="error-message" class="error"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        function playIPTV() {
+            const video = document.getElementById('iptv-video');
+            const urlInput = document.getElementById('iptv-url');
+            const errorMessage = document.getElementById('error-message');
+            const iptvUrl = urlInput.value.trim();
+
+            errorMessage.textContent = ""; // Clear previous errors
+
+            if (!iptvUrl) {
+                errorMessage.textContent = "Please enter a valid .m3u8 URL.";
+                return;
+            }
+
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(iptvUrl);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    video.play();
+                });
+                hls.on(Hls.Events.ERROR, (event, data) => {
+                    errorMessage.textContent = `Error: ${data.details}`;
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = iptvUrl;
+                video.addEventListener('loadedmetadata', () => {
+                    video.play();
+                });
+            } else {
+                errorMessage.textContent = "HLS is not supported in this browser.";
+            }
+        }
+    </script>
+</body>
+</html>
