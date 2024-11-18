@@ -95,7 +95,18 @@
         const video = document.getElementById('iptv-video');
         const menuItems = document.querySelectorAll('.menu-item');
 
+        // Simple function to generate token (for demonstration purposes)
+        function generateToken() {
+            const timestamp = Date.now();
+            const secretKey = 'your-secret-key'; // Replace with a secure key in a real implementation
+            return btoa(secretKey + timestamp); // Create token by encoding secret and timestamp
+        }
+
+        // Function to play the stream with the generated token
         function playChannel(url) {
+            const token = generateToken(); // Generate token for each stream request
+            const tokenizedUrl = `${url}?token=${token}`; // Add token to URL
+
             if (Hls.isSupported()) {
                 const hls = new Hls({
                     maxBufferLength: 60, // Increase buffer length (in seconds)
@@ -105,7 +116,7 @@
                     liveMaxLatencyDuration: 20, // Extend allowed latency for live streams
                 });
 
-                hls.loadSource(url);
+                hls.loadSource(tokenizedUrl);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
                     video.play();
@@ -114,7 +125,7 @@
                     console.error(`Error: ${data.details}`);
                 });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = url;
+                video.src = tokenizedUrl;
                 video.play();
             } else {
                 alert("HLS is not supported on this device/browser.");
