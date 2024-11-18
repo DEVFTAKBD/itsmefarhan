@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate IPTV Channel Code</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #121212;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sticky-player {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: #121212;
+            padding: 10px;
+            width: 100%;
+            max-width: 800px;
+            border-bottom: 2px solid #444;
+        }
+        video {
+            width: 100%;
+            max-width: 100%;
+            height: auto;
+            background: black;
+            border-radius: 8px;
+            border: 2px solid #444;
+        }
+        .form-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            width: 300px;
+        }
+        input:focus, button:focus {
+            outline: none;
+        }
+        .generated-code {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #333;
+            color: white;
+            font-family: monospace;
+            width: 100%;
+            max-width: 800px;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sticky Video Player -->
+        <div class="sticky-player">
+            <video id="iptv-video" controls autoplay></video>
+        </div>
+
+        <!-- Form for Inputting M3U8 Link and Channel Name -->
+        <div class="form-container">
+            <input type="text" id="channel-name" placeholder="Enter Channel Name" />
+            <input type="text" id="m3u8-link" placeholder="Enter M3U8 URL" />
+            <button id="generate-code">Generate Code</button>
+        </div>
+
+        <!-- Display Generated Code -->
+        <div class="generated-code" id="generated-code"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+        const video = document.getElementById('iptv-video');
+        const channelNameInput = document.getElementById('channel-name');
+        const m3u8LinkInput = document.getElementById('m3u8-link');
+        const generateButton = document.getElementById('generate-code');
+        const generatedCode = document.getElementById('generated-code');
+
+        // Function to play the channel based on M3U8 URL
+        function playChannel(url) {
+            if (Hls.isSupported()) {
+                const hls = new Hls();
+                hls.loadSource(url);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                    video.play();
+                });
+                hls.on(Hls.Events.ERROR, (event, data) => {
+                    console.error(`Error: ${data.details}`);
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = url;
+                video.play();
+            } else {
+                alert("HLS is not supported on this device/browser.");
+            }
+        }
+
+        // Generate the channel code
+        generateButton.addEventListener('click', () => {
+            const channelName = channelNameInput.value.trim();
+            const m3u8Link = m3u8LinkInput.value.trim();
+
+            if (channelName && m3u8Link) {
+                // Play the stream in the player
+                playChannel(m3u8Link);
+
+                // Generate the code
+                const generatedHTML = `<div class="menu-item" tabindex="0" data-url="${m3u8Link}">${channelName}</div>`;
+                generatedCode.textContent = generatedHTML;  // Display the generated code
+
+                // Clear inputs after generating the code
+                channelNameInput.value = '';
+                m3u8LinkInput.value = '';
+            } else {
+                alert("Please fill in both the channel name and M3U8 link.");
+            }
+        });
+    </script>
+</body>
+</html>
