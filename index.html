@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITSME FARHAN IPTV - Watch Tv Channels Online</title>
+    <title>ITSME FARHAN IPTV - Watch TV Channels Online</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -83,32 +83,12 @@
         </div>
 
         <!-- Channel List -->
-        
-        
-        
-        
-        
-        
-        
-        
-        
         <div class="menu" id="menu">
             <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/9xm/index.m3u8">9XM</div>
             
-            
-            
             <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/gtv/index.m3u8">GTV</div>
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
-   
+            
+            <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/metv/index.m3u8">MeTV</div>
         </div>
     </div>
 
@@ -119,7 +99,14 @@
 
         function playChannel(url) {
             if (Hls.isSupported()) {
-                const hls = new Hls();
+                const hls = new Hls({
+                    maxBufferLength: 60, // Increase buffer length (in seconds)
+                    maxBufferSize: 60 * 1000 * 1000, // Increase buffer size in bytes
+                    maxBufferHole: 2, // Allow a larger gap before playback stalls
+                    liveSyncDuration: 10, // Sync live streams with a longer duration
+                    liveMaxLatencyDuration: 20, // Extend allowed latency for live streams
+                });
+
                 hls.loadSource(url);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
