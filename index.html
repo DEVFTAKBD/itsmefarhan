@@ -79,7 +79,7 @@
     <div class="container">
         <!-- Sticky Video Player -->
         <div class="sticky-player">
-            <video id="iptv-video" controls></video>
+            <video id="iptv-video" controls autoplay></video>
         </div>
 
         <!-- Channel List -->
@@ -98,30 +98,20 @@
         function playChannel(url) {
             if (Hls.isSupported()) {
                 const hls = new Hls({
-                    maxBufferLength: 120, // Increase buffer length (in seconds)
-                    maxBufferSize: 120 * 1000 * 1000, // Increase buffer size in bytes
-                    maxBufferHole: 5, // Allow a larger gap before playback stalls
-                    liveSyncDuration: 0, // Disable sync duration for live streams
-                    liveMaxLatencyDuration: 0, // Disable max latency to avoid potential issues
+                    maxBufferLength: 60, // Increase buffer length (in seconds)
+                    maxBufferSize: 60 * 1000 * 1000, // Increase buffer size in bytes
+                    maxBufferHole: 2, // Allow a larger gap before playback stalls
+                    liveSyncDuration: 10, // Sync live streams with a longer duration
+                    liveMaxLatencyDuration: 20, // Extend allowed latency for live streams
                 });
 
                 hls.loadSource(url);
                 hls.attachMedia(video);
-
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
                     video.play();
                 });
-
                 hls.on(Hls.Events.ERROR, (event, data) => {
                     console.error(`Error: ${data.details}`);
-                });
-
-                // Restart stream if it pauses
-                video.addEventListener('pause', function () {
-                    if (video.ended || video.paused) {
-                        console.log("Video paused or ended, trying to restart.");
-                        video.play();
-                    }
                 });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
                 video.src = url;
