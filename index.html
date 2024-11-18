@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPTV Player</title>
+    <title>ITSME FARHAN IPTV - Watch Tv Channels Online</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -14,20 +14,30 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-x: hidden;
         }
         .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
             width: 100%;
             max-width: 1200px;
             margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sticky-player {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background-color: #121212;
+            padding: 10px;
+            width: 100%;
+            max-width: 800px;
+            border-bottom: 2px solid #444;
         }
         video {
             width: 100%;
             max-width: 100%;
             height: auto;
-            max-height: 70vh;
             background: black;
             border-radius: 8px;
             border: 2px solid #444;
@@ -67,13 +77,38 @@
 </head>
 <body>
     <div class="container">
-        <h1>IPTV Player</h1>
-        <video id="iptv-video" controls autoplay></video>
+        <!-- Sticky Video Player -->
+        <div class="sticky-player">
+            <video id="iptv-video" controls autoplay></video>
+        </div>
+
+        <!-- Channel List -->
+        
+        
+        
+        
+        
+        
+        
+        
+        
         <div class="menu" id="menu">
+            <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/9xm/index.m3u8">9XM</div>
+            
+            
+            
             <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/gtv/index.m3u8">GTV</div>
-            <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/9xm/index.m3u8">Channel 2</div>
-            <div class="menu-item" tabindex="0" data-url="https://test-streams.mux.dev/dai-discontinuity-daterange/dai-discontinuity-daterange.m3u8">Channel 3</div>
-            <div class="menu-item" tabindex="0" data-url="https://test-streams.mux.dev/pts_shift/master.m3u8">Channel 4</div>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
         </div>
     </div>
 
