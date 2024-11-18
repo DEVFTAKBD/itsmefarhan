@@ -3,112 +3,128 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive IPTV Player</title>
+    <title>IPTV Player</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #121212;
-            color: #ffffff;
+            color: white;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
         .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             width: 100%;
             max-width: 1200px;
-            padding: 20px;
-            text-align: center;
+            margin-top: 20px;
         }
         video {
             width: 100%;
+            max-width: 100%;
             height: auto;
-            max-height: 80vh;
-            background: #000;
+            max-height: 70vh;
+            background: black;
             border-radius: 8px;
-            margin-bottom: 20px;
+            border: 2px solid #444;
         }
-        input[type="text"] {
-            width: calc(100% - 24px);
+        .menu {
+            width: 100%;
             max-width: 800px;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background: #1e1e1e;
             padding: 10px;
-            font-size: 16px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            border-radius: 8px;
         }
-        button {
-            padding: 10px 20px;
-            font-size: 16px;
-            border: none;
+        .menu-item {
+            padding: 15px;
             background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
+            color: white;
+            text-align: center;
             border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            outline: none;
+            border: none;
+            transition: background-color 0.3s;
         }
-        button:hover {
+        .menu-item:focus {
             background-color: #0056b3;
-        }
-        .error {
-            color: red;
-            margin-top: 10px;
         }
         @media (max-width: 768px) {
             video {
                 max-height: 50vh;
-            }
-            button {
-                width: 100%;
-                max-width: 800px;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Responsive IPTV Player</h1>
-        <p>Enter your IPTV stream URL below:</p>
-        <input type="text" id="iptv-url" placeholder="Enter your IPTV .m3u8 URL">
-        <button onclick="playIPTV()">Play</button>
-        <video id="iptv-video" controls></video>
-        <div id="error-message" class="error"></div>
+        <h1>IPTV Player</h1>
+        <video id="iptv-video" controls autoplay></video>
+        <div class="menu" id="menu">
+            <div class="menu-item" tabindex="0" data-url="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8">Channel 1</div>
+            <div class="menu-item" tabindex="0" data-url="https://test-streams.mux.dev/test_001/stream.m3u8">Channel 2</div>
+            <div class="menu-item" tabindex="0" data-url="https://test-streams.mux.dev/dai-discontinuity-daterange/dai-discontinuity-daterange.m3u8">Channel 3</div>
+            <div class="menu-item" tabindex="0" data-url="https://test-streams.mux.dev/pts_shift/master.m3u8">Channel 4</div>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script>
-        function playIPTV() {
-            const video = document.getElementById('iptv-video');
-            const urlInput = document.getElementById('iptv-url');
-            const errorMessage = document.getElementById('error-message');
-            const iptvUrl = urlInput.value.trim();
+        const video = document.getElementById('iptv-video');
+        const menuItems = document.querySelectorAll('.menu-item');
 
-            errorMessage.textContent = ""; // Clear previous errors
-
-            if (!iptvUrl) {
-                errorMessage.textContent = "Please enter a valid .m3u8 URL.";
-                return;
-            }
-
+        function playChannel(url) {
             if (Hls.isSupported()) {
                 const hls = new Hls();
-                hls.loadSource(iptvUrl);
+                hls.loadSource(url);
                 hls.attachMedia(video);
                 hls.on(Hls.Events.MANIFEST_PARSED, () => {
                     video.play();
                 });
                 hls.on(Hls.Events.ERROR, (event, data) => {
-                    errorMessage.textContent = `Error: ${data.details}`;
+                    console.error(`Error: ${data.details}`);
                 });
             } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = iptvUrl;
-                video.addEventListener('loadedmetadata', () => {
-                    video.play();
-                });
+                video.src = url;
+                video.play();
             } else {
-                errorMessage.textContent = "HLS is not supported in this browser.";
+                alert("HLS is not supported on this device/browser.");
             }
         }
+
+        // Add keyboard navigation
+        menuItems.forEach(item => {
+            item.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    const url = item.getAttribute('data-url');
+                    playChannel(url);
+                } else if (e.key === 'ArrowDown') {
+                    const next = item.nextElementSibling || menuItems[0];
+                    next.focus();
+                } else if (e.key === 'ArrowUp') {
+                    const prev = item.previousElementSibling || menuItems[menuItems.length - 1];
+                    prev.focus();
+                }
+            });
+
+            item.addEventListener('click', () => {
+                const url = item.getAttribute('data-url');
+                playChannel(url);
+            });
+        });
+
+        // Focus the first menu item by default
+        menuItems[0].focus();
+        playChannel(menuItems[0].getAttribute('data-url'));
     </script>
 </body>
 </html>
