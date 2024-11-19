@@ -107,6 +107,8 @@
       // Add other channels as needed
     ];
 
+    let currentChannelIndex = 0;
+
     // Function to generate a random token
     function generateToken() {
       return Math.random().toString(36).substring(2, 15);
@@ -123,8 +125,6 @@
       name: channel.name,
       url: generateChannelUrl(channel)
     }));
-
-    let currentChannelIndex = 0;
 
     // Function to populate the channel list
     function populateChannels() {
