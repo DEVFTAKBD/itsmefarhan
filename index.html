@@ -12,11 +12,14 @@
       color: white;
       overflow: hidden;
     }
+
     .container {
-      max-width: 800px;
+      max-width: 1000px;
       margin: 20px auto;
-      padding: 10px;
+      padding: 20px;
+      text-align: center;
     }
+
     .player {
       margin-bottom: 20px;
       padding: 10px;
@@ -24,34 +27,42 @@
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     }
+
     video {
       width: 100%;
       border-radius: 10px;
+      height: auto;
     }
+
     .channel-list {
-      max-height: 300px;
-      overflow-y: scroll;
-      scroll-behavior: smooth;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      grid-gap: 10px;
+      margin-top: 20px;
       padding: 10px;
-      background: rgba(0, 0, 0, 0.8);
-      border-radius: 10px;
     }
+
     .channel {
-      padding: 10px;
-      margin: 5px 0;
+      padding: 15px;
       background: #444;
-      border-radius: 5px;
+      border-radius: 50%;
       cursor: pointer;
       text-align: center;
+      font-size: 14px;
+      color: white;
+      transition: background 0.3s ease;
     }
+
     .channel:hover {
       background: #666;
     }
+
     .nav-buttons {
       display: flex;
       justify-content: space-between;
-      margin-top: 10px;
+      margin-top: 20px;
     }
+
     .nav-button {
       padding: 10px 20px;
       background: #444;
@@ -60,21 +71,29 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
     .nav-button:hover {
       background: #666;
     }
   </style>
-  <!-- Using HLS.js version 0.14.19 -->
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@0.14.19"></script>
+
+  <!-- Latest version of HLS.js -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@1.9.0"></script>
 </head>
 <body>
+
   <div class="container">
+    <!-- Video player -->
     <div class="player">
       <video id="videoPlayer" controls autoplay>
         Your browser does not support the video tag.
       </video>
     </div>
+
+    <!-- Channel list -->
     <div class="channel-list" id="channelList"></div>
+
+    <!-- Navigation buttons -->
     <div class="nav-buttons">
       <button id="upButton" class="nav-button">Up</button>
       <button id="downButton" class="nav-button">Down</button>
@@ -85,32 +104,7 @@
     const channelsData = [
       { name: "ATN Bangla", url: "https://edge01.iptv.digijadoo.net/live/atn_bangla/playlist.m3u8?md5=HIcMM4M7TmsFp01a_oEb_w&expires=1732235988&user=811838a63b224e85b02b925b31d0fece" },
       { name: "Asian TV", url: "https://edge01.iptv.digijadoo.net/live/asian_tv/playlist.m3u8?md5=PPXPcOSQX6rK_uBNX4TrPQ&expires=1732233994&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "ATN News", url: "https://edge01.iptv.digijadoo.net/live/atn_news/playlist.m3u8?md5=NqfWYINOAugFntsFFb2R3w&expires=1732236422&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Bangla TV", url: "https://edge01.iptv.digijadoo.net/live/bangla_tv/playlist.m3u8?md5=aX4x8mc7AbO4Cdpu3K7ibA&expires=1732236633&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Boishakhi Tv", url: "https://edge01.iptv.digijadoo.net/live/boishakhi_tv/playlist.m3u8?md5=Gp6wZ0XfPExKYnMiJOM8vA&expires=1732236869&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Channel 24", url: "https://edge01.iptv.digijadoo.net/live/channel_24/playlist.m3u8?md5=zURsMty6AMEFNeInZyzARQ&expires=1732236928&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Channel 9", url: "https://edge01.iptv.digijadoo.net/live/channel_9/playlist.m3u8?md5=sZlF_56YYs-9eK2YA0dYmA&expires=1732236990&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "DBC News", url: "https://edge01.iptv.digijadoo.net/live/dbc_news/playlist.m3u8?md5=8jFg9ceqS9JvYqY4K7td5Q&expires=1732239668&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Deepto Tv", url: "https://edge01.iptv.digijadoo.net/live/deepto_tv/playlist.m3u8?md5=blnpgW74A_W2DipAdLlJdg&expires=1732239771&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Desh Tv", url: "https://edge01.iptv.digijadoo.net/live/desh_tv/playlist.m3u8?md5=3NUGG5tLUuND_lEG3Grfiw&expires=1732239806&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Duronto Tv", url: "https://edge01.iptv.digijadoo.net/live/duronto_tv/playlist.m3u8?md5=kk_H0JkHp30TiKlbVf-kVw&expires=1732239835&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Ekattor Tv", url: "https://edge01.iptv.digijadoo.net/live/ekattor_tv/playlist.m3u8?md5=aAoVisz5jf8lXUAnUUPMbg&expires=1732239871&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Ekushey Tv", url: "https://edge01.iptv.digijadoo.net/live/ekushey_tv/playlist.m3u8?md5=NkD4uUve79nEPjTdU9GW6A&expires=1732239913&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "GTV", url: "https://edge01.iptv.digijadoo.net/live/gazi_tv_hd/playlist.m3u8?md5=o8AbxSNVrJQ8nylPm6iLYA&expires=1732239980&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Independent Tv", url: "https://edge01.iptv.digijadoo.net/live/independent_tv/playlist.m3u8?md5=vK5ulUHiRxZE6M4rDRMFGQ&expires=1732240018&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Jamuna Tv", url: "https://edge01.iptv.digijadoo.net/live/jamuna_tv/playlist.m3u8?md5=x8DUMSZtAIt8RAsHczZnNw&expires=1732240057&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Maasranga Tv", url: "https://edge01.iptv.digijadoo.net/live/maasranga/playlist.m3u8?md5=IXxSBPQEqcu76bbJKF_l6g&expires=1732240086&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "NTV", url: "https://edge01.iptv.digijadoo.net/live/ntv/playlist.m3u8?md5=UzN0ZIv1VVFjdyZ7EMf5yQ&expires=1732240118&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Nagorik Tv", url: "https://edge01.iptv.digijadoo.net/live/nagorik_tv/playlist.m3u8?md5=7Ox4aBxpjJs9WhnEmzjc7Q&expires=1732240150&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "News 24", url: "https://edge01.iptv.digijadoo.net/live/news_24_hd/playlist.m3u8?md5=KaIobez1RdrDyX9Jk75Y6w&expires=1732240176&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Nexus Tv", url: "https://edge01.iptv.digijadoo.net/live/nexus_tv/playlist.m3u8?md5=fJaZAlV6htaVtOhno_2lrw&expires=1732240216&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "RTV", url: "https://edge01.iptv.digijadoo.net/live/rtv/playlist.m3u8?md5=p28J_udE-zWU5iGuKFlBTw&expires=1732240255&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "SATV", url: "https://edge01.iptv.digijadoo.net/live/sa_tv/playlist.m3u8?md5=S_vSaU7P_KYL8ycNwALfyg&expires=1732240285&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Somoy Tv", url: "https://edge01.iptv.digijadoo.net/live/somoy_news/playlist.m3u8?md5=v6h16Y7_cDz_PbVJX-2l-g&expires=1732240328&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Tsports", url: "https://edge01.iptv.digijadoo.net/live/t_sports/playlist.m3u8?md5=hht6oaglR5QaWLa0Z6e6Dw&expires=1732240364&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Zee Bangla", url: "https://edge01.iptv.digijadoo.net/live/zee_bangla/playlist.m3u8?md5=ZldwMDy5wmqDgMInMPU_cg&expires=1732240393&user=811838a63b224e85b02b925b31d0fece" }
-      
-   
+      // Add other channels as needed
     ];
 
     // Function to generate a random token
