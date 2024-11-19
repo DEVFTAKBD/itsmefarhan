@@ -1,219 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ITSME FARHAN IPTV - Watch TV Channels Online</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #121212;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            overflow-x: hidden;
-        }
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .sticky-player {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background-color: #121212;
-            padding: 10px;
-            width: 100%;
-            max-width: 800px;
-            border-bottom: 2px solid #444;
-        }
-        video {
-            width: 100%;
-            max-width: 100%;
-            height: auto;
-            background: black;
-            border-radius: 8px;
-            border: 2px solid #444;
-        }
-        .menu {
-            width: 100%;
-            max-width: 800px;
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            background: #1e1e1e;
-            padding: 10px;
-            border-radius: 8px;
-        }
-        .menu-item {
-            padding: 15px;
-            background-color: #007bff;
-            color: white;
-            text-align: center;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            outline: none;
-            border: none;
-            transition: background-color 0.3s;
-        }
-        .menu-item:focus {
-            background-color: #0056b3;
-        }
-        @media (max-width: 768px) {
-            video {
-                max-height: 50vh;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ITSMEFARHAN | Watch Livr TV Channels Online</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e1e2f, #31314f);
+      color: white;
+      overflow: hidden;
+    }
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 10px;
+    }
+    .player {
+      margin-bottom: 20px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    video {
+      width: 100%;
+      border-radius: 10px;
+    }
+    .channel-list {
+      max-height: 300px;
+      overflow-y: scroll;
+      scroll-behavior: smooth;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+    }
+    .channel {
+      padding: 10px;
+      margin: 5px 0;
+      background: #444;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+    }
+    .channel:hover {
+      background: #666;
+    }
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    .nav-button {
+      padding: 10px 20px;
+      background: #444;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .nav-button:hover {
+      background: #666;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 </head>
 <body>
-    <div class="container">
-        <!-- Sticky Video Player -->
-        <div class="sticky-player">
-            <video id="iptv-video" controls autoplay></video>
-        </div>
-
-        <!-- Channel List -->
-           <center>  <h2> Bangla </h2> </center>
-           
-      
-              <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/atnbangla/index.m3u8">ATN Bangla</div>
-              
-                      <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/metv/index.m3u8">ME TV</div>
-           
-           <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/deshtv/index.m3u8">Desh Tv</div>
-
-<div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/deepto/index.m3u8">Deepto Tv</div>
-       
-       
-       <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/rtv/index.m3u8">RTV</div>
-       
-       
-       <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/channel9/index.m3u8">Channel 9</div>
-       
-       
-       
-       <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/ntv/index.m3u8">NTV</div>
-       
-       
-       
-       <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/independent/index.m3u8">Independent Tv</div>
-       
-       
-       <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/channeli/index.m3u8">Channel I</div>
-       
-       
-       <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/banglavision/index.m3u8">Bangla Vision</div>
-       
-       <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/mohona/index.m3u8">Mohona Tv</div>
-       
-       
-       <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/maasranga/index.m3u8">Maasranga Tv</div>
-       
-       
-    <center>  <h2> Sports </h2> </center>
-        
-          
-            <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/gtv/index.m3u8">GTV</div>
-           
-
-
-<div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/tsports3/index.m3u8">Tsports</div>
-
-           
-           <center>  <h2> Music </h2> </center>    
-           
-             <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/9xm/index.m3u8">9XM</div>
-
-                   
-             <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/gaanbangla/index.m3u8">Gaan Bangla</div>
-
-        
-                     <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/abmasti/index.m3u8">9XM</div>
-
-        
-           <div class="menu-item" tabindex="0" data-url="http://itsmefarhan.dev.tc:8080/sbangla/index.m3u8">Sangeet Bangla</div>
-
-
-
-        
+  <div class="container">
+    <div class="player">
+      <video id="videoPlayer" controls autoplay>
+        Your browser does not support the video tag.
+      </video>
     </div>
+    <div class="channel-list" id="channelList"></div>
+    <div class="nav-buttons">
+      <button id="upButton" class="nav-button">Up</button>
+      <button id="downButton" class="nav-button">Down</button>
+    </div>
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <script>
-        const video = document.getElementById('iptv-video');
-        const menuItems = document.querySelectorAll('.menu-item');
+  <script>
+    const channelsData = [
+      { name: "ATN Bangla", url: "https://edge01.iptv.digijadoo.net/live/atn_bangla/playlist.m3u8?md5=HIcMM4M7TmsFp01a_oEb_w&expires=1732235988&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Asian TV", url: "https://edge01.iptv.digijadoo.net/live/asian_tv/playlist.m3u8?md5=PPXPcOSQX6rK_uBNX4TrPQ&expires=1732233994&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "ATN News", url: "https://edge01.iptv.digijadoo.net/live/atn_news/playlist.m3u8?md5=NqfWYINOAugFntsFFb2R3w&expires=1732236422&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Bangla TV", url: "https://edge01.iptv.digijadoo.net/live/bangla_tv/playlist.m3u8?md5=aX4x8mc7AbO4Cdpu3K7ibA&expires=1732236633&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Boishakhi Tv", url: "https://edge01.iptv.digijadoo.net/live/boishakhi_tv/playlist.m3u8?md5=Gp6wZ0XfPExKYnMiJOM8vA&expires=1732236869&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Channel 24", url: "https://edge01.iptv.digijadoo.net/live/channel_24/playlist.m3u8?md5=zURsMty6AMEFNeInZyzARQ&expires=1732236928&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Channel 9", url: "https://edge01.iptv.digijadoo.net/live/channel_9/playlist.m3u8?md5=sZlF_56YYs-9eK2YA0dYmA&expires=1732236990&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "DBC News", url: "https://edge01.iptv.digijadoo.net/live/dbc_news/playlist.m3u8?md5=8jFg9ceqS9JvYqY4K7td5Q&expires=1732239668&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Deepto Tv", url: "https://edge01.iptv.digijadoo.net/live/deepto_tv/playlist.m3u8?md5=blnpgW74A_W2DipAdLlJdg&expires=1732239771&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Desh Tv", url: "https://edge01.iptv.digijadoo.net/live/desh_tv/playlist.m3u8?md5=3NUGG5tLUuND_lEG3Grfiw&expires=1732239806&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Duronto Tv", url: "https://edge01.iptv.digijadoo.net/live/duronto_tv/playlist.m3u8?md5=kk_H0JkHp30TiKlbVf-kVw&expires=1732239835&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Ekattor Tv", url: "https://edge01.iptv.digijadoo.net/live/ekattor_tv/playlist.m3u8?md5=aAoVisz5jf8lXUAnUUPMbg&expires=1732239871&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Ekushey Tv", url: "https://edge01.iptv.digijadoo.net/live/ekushey_tv/playlist.m3u8?md5=NkD4uUve79nEPjTdU9GW6A&expires=1732239913&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "GTV", url: "https://edge01.iptv.digijadoo.net/live/gazi_tv_hd/playlist.m3u8?md5=o8AbxSNVrJQ8nylPm6iLYA&expires=1732239980&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Independent Tv", url: "https://edge01.iptv.digijadoo.net/live/independent_tv/playlist.m3u8?md5=vK5ulUHiRxZE6M4rDRMFGQ&expires=1732240018&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Jamuna Tv", url: "https://edge01.iptv.digijadoo.net/live/jamuna_tv/playlist.m3u8?md5=x8DUMSZtAIt8RAsHczZnNw&expires=1732240057&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Maasranga Tv", url: "https://edge01.iptv.digijadoo.net/live/maasranga/playlist.m3u8?md5=IXxSBPQEqcu76bbJKF_l6g&expires=1732240086&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "NTV", url: "https://edge01.iptv.digijadoo.net/live/ntv/playlist.m3u8?md5=UzN0ZIv1VVFjdyZ7EMf5yQ&expires=1732240118&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Nagorik Tv", url: "https://edge01.iptv.digijadoo.net/live/nagorik_tv/playlist.m3u8?md5=7Ox4aBxpjJs9WhnEmzjc7Q&expires=1732240150&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "News 24", url: "https://edge01.iptv.digijadoo.net/live/news_24_hd/playlist.m3u8?md5=KaIobez1RdrDyX9Jk75Y6w&expires=1732240176&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Nexus Tv", url: "https://edge01.iptv.digijadoo.net/live/nexus_tv/playlist.m3u8?md5=fJaZAlV6htaVtOhno_2lrw&expires=1732240216&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "RTV", url: "https://edge01.iptv.digijadoo.net/live/rtv/playlist.m3u8?md5=p28J_udE-zWU5iGuKFlBTw&expires=1732240255&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "SATV", url: "https://edge01.iptv.digijadoo.net/live/sa_tv/playlist.m3u8?md5=S_vSaU7P_KYL8ycNwALfyg&expires=1732240285&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Somoy Tv", url: "https://edge01.iptv.digijadoo.net/live/somoy_news/playlist.m3u8?md5=v6h16Y7_cDz_PbVJX-2l-g&expires=1732240328&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Tsports", url: "https://edge01.iptv.digijadoo.net/live/t_sports/playlist.m3u8?md5=hht6oaglR5QaWLa0Z6e6Dw&expires=1732240364&user=811838a63b224e85b02b925b31d0fece" },
+      { name: "Zee Bangla", url: "https://edge01.iptv.digijadoo.net/live/zee_bangla/playlist.m3u8?md5=ZldwMDy5wmqDgMInMPU_cg&expires=1732240393&user=811838a63b224e85b02b925b31d0fece" }
+      
+   
+    ];
 
-        // Simple function to generate token (for demonstration purposes)
-        function generateToken() {
-            const timestamp = Date.now();
-            const secretKey = 'your-secret-key'; // Replace with a secure key in a real implementation
-            return btoa(secretKey + timestamp); // Create token by encoding secret and timestamp
-        }
+    // Function to generate a random token
+    function generateToken() {
+      return Math.random().toString(36).substring(2, 15);
+    }
 
-        // Function to play the stream with the generated token
-        function playChannel(url) {
-            const token = generateToken(); // Generate token for each stream request
-            const tokenizedUrl = `${url}?token=${token}`; // Add token to URL
+    // Function to generate a URL with dynamic token
+    function generateChannelUrl(channel) {
+      const token = generateToken();
+      return `${channel.url}&token=${token}`; // Append token to the URL
+    }
 
-            if (Hls.isSupported()) {
-                const hls = new Hls({
-                    maxBufferLength: 60, // Increase buffer length (in seconds)
-                    maxBufferSize: 60 * 1000 * 1000, // Increase buffer size in bytes
-                    maxBufferHole: 2, // Allow a larger gap before playback stalls
-                    liveSyncDuration: 10, // Sync live streams with a longer duration
-                    liveMaxLatencyDuration: 20, // Extend allowed latency for live streams
-                });
+    // Channels with dynamically generated token URLs
+    const channels = channelsData.map(channel => ({
+      name: channel.name,
+      url: generateChannelUrl(channel)
+    }));
 
-                hls.loadSource(tokenizedUrl);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => {
-                    video.play();
-                });
-                hls.on(Hls.Events.ERROR, (event, data) => {
-                    console.error(`Error: ${data.details}`);
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = tokenizedUrl;
-                video.play();
-            } else {
-                alert("HLS is not supported on this device/browser.");
-            }
-        }
+    let currentChannelIndex = 0;
 
-        // Add keyboard navigation
-        menuItems.forEach(item => {
-            item.addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    const url = item.getAttribute('data-url');
-                    playChannel(url);
-                } else if (e.key === 'ArrowDown') {
-                    const next = item.nextElementSibling || menuItems[0];
-                    next.focus();
-                } else if (e.key === 'ArrowUp') {
-                    const prev = item.previousElementSibling || menuItems[menuItems.length - 1];
-                    prev.focus();
-                }
-            });
+    // Function to populate the channel list
+    function populateChannels() {
+      const channelList = document.getElementById('channelList');
+      channelList.innerHTML = '';
+      channels.forEach((channel, index) => {
+        const channelDiv = document.createElement('div');
+        channelDiv.className = 'channel';
+        channelDiv.textContent = channel.name;
+        channelDiv.onclick = () => playChannel(index);
+        channelList.appendChild(channelDiv);
+      });
+      playChannel(currentChannelIndex);
+    }
 
-            item.addEventListener('click', () => {
-                const url = item.getAttribute('data-url');
-                playChannel(url);
-            });
+    // Function to play the selected channel
+    function playChannel(index) {
+      const videoPlayer = document.getElementById('videoPlayer');
+      const channel = channels[index];
+
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(channel.url);
+        hls.attachMedia(videoPlayer);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+          videoPlayer.play();
         });
+      } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+        videoPlayer.src = channel.url;
+        videoPlayer.addEventListener('canplay', function () {
+          videoPlayer.play();
+        });
+      } else {
+        console.log('HLS is not supported on this device');
+      }
+      currentChannelIndex = index;
+    }
 
-        // Focus the first menu item by default
-        menuItems[0].focus();
-        playChannel(menuItems[0].getAttribute('data-url'));
-    </script>
+    // Function to move up in the channel list
+    document.getElementById('upButton').onclick = function () {
+      if (currentChannelIndex > 0) {
+        currentChannelIndex--;
+        playChannel(currentChannelIndex);
+      }
+    };
+
+    // Function to move down in the channel list
+    document.getElementById('downButton').onclick = function () {
+      if (currentChannelIndex < channels.length - 1) {
+        currentChannelIndex++;
+        playChannel(currentChannelIndex);
+      }
+    };
+
+    // Initial population of channels and setup
+    populateChannels();
+  </script>
 </body>
 </html>
