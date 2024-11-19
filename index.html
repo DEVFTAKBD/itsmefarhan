@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ITSMEFARHAN | Watch Livr TV Channels Online</title>
+  <title>ITSMEFARHAN | Watch Live TV Channels Online</title>
   <style>
     body {
       margin: 0;
@@ -64,7 +64,8 @@
       background: #666;
     }
   </style>
-  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+  <!-- Using HLS.js version 0.14.19 -->
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@0.14.19"></script>
 </head>
 <body>
   <div class="container">
@@ -98,58 +99,18 @@
       { name: "GTV", url: "https://edge01.iptv.digijadoo.net/live/gazi_tv_hd/playlist.m3u8?md5=o8AbxSNVrJQ8nylPm6iLYA&expires=1732239980&user=811838a63b224e85b02b925b31d0fece" },
       { name: "Independent Tv", url: "https://edge01.iptv.digijadoo.net/live/independent_tv/playlist.m3u8?md5=vK5ulUHiRxZE6M4rDRMFGQ&expires=1732240018&user=811838a63b224e85b02b925b31d0fece" },
       { name: "Jamuna Tv", url: "https://edge01.iptv.digijadoo.net/live/jamuna_tv/playlist.m3u8?md5=x8DUMSZtAIt8RAsHczZnNw&expires=1732240057&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Maasranga Tv", url: "https://edge01.iptv.digijadoo.net/live/maasranga/playlist.m3u8?md5=IXxSBPQEqcu76bbJKF_l6g&expires=1732240086&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "NTV", url: "https://edge01.iptv.digijadoo.net/live/ntv/playlist.m3u8?md5=UzN0ZIv1VVFjdyZ7EMf5yQ&expires=1732240118&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Nagorik Tv", url: "https://edge01.iptv.digijadoo.net/live/nagorik_tv/playlist.m3u8?md5=7Ox4aBxpjJs9WhnEmzjc7Q&expires=1732240150&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "News 24", url: "https://edge01.iptv.digijadoo.net/live/news_24_hd/playlist.m3u8?md5=KaIobez1RdrDyX9Jk75Y6w&expires=1732240176&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Nexus Tv", url: "https://edge01.iptv.digijadoo.net/live/nexus_tv/playlist.m3u8?md5=fJaZAlV6htaVtOhno_2lrw&expires=1732240216&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "RTV", url: "https://edge01.iptv.digijadoo.net/live/rtv/playlist.m3u8?md5=p28J_udE-zWU5iGuKFlBTw&expires=1732240255&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "SATV", url: "https://edge01.iptv.digijadoo.net/live/sa_tv/playlist.m3u8?md5=S_vSaU7P_KYL8ycNwALfyg&expires=1732240285&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Somoy Tv", url: "https://edge01.iptv.digijadoo.net/live/somoy_news/playlist.m3u8?md5=v6h16Y7_cDz_PbVJX-2l-g&expires=1732240328&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Tsports", url: "https://edge01.iptv.digijadoo.net/live/t_sports/playlist.m3u8?md5=hht6oaglR5QaWLa0Z6e6Dw&expires=1732240364&user=811838a63b224e85b02b925b31d0fece" },
-      { name: "Zee Bangla", url: "https://edge01.iptv.digijadoo.net/live/zee_bangla/playlist.m3u8?md5=ZldwMDy5wmqDgMInMPU_cg&expires=1732240393&user=811838a63b224e85b02b925b31d0fece" }
-      
-   
+      { name: "Maasranga Tv", url: "https://edge01.iptv.digijadoo.net/live/maasranga/playlist.m3u8?md5=IXxSBPQEqcu76bbJKF_l6g&expires=1732240086&user=811838a63b224e85b02b925b31d0fece" }
     ];
 
-    // Function to generate a random token
-    function generateToken() {
-      return Math.random().toString(36).substring(2, 15);
-    }
+    let currentIndex = 0;
 
-    // Function to generate a URL with dynamic token
-    function generateChannelUrl(channel) {
-      const token = generateToken();
-      return `${channel.url}&token=${token}`; // Append token to the URL
-    }
+    const videoPlayer = document.getElementById("videoPlayer");
+    const channelList = document.getElementById("channelList");
+    const upButton = document.getElementById("upButton");
+    const downButton = document.getElementById("downButton");
 
-    // Channels with dynamically generated token URLs
-    const channels = channelsData.map(channel => ({
-      name: channel.name,
-      url: generateChannelUrl(channel)
-    }));
-
-    let currentChannelIndex = 0;
-
-    // Function to populate the channel list
-    function populateChannels() {
-      const channelList = document.getElementById('channelList');
-      channelList.innerHTML = '';
-      channels.forEach((channel, index) => {
-        const channelDiv = document.createElement('div');
-        channelDiv.className = 'channel';
-        channelDiv.textContent = channel.name;
-        channelDiv.onclick = () => playChannel(index);
-        channelList.appendChild(channelDiv);
-      });
-      playChannel(currentChannelIndex);
-    }
-
-    // Function to play the selected channel
-    function playChannel(index) {
-      const videoPlayer = document.getElementById('videoPlayer');
-      const channel = channels[index];
-
+    function loadChannel(index) {
+      const channel = channelsData[index];
       if (Hls.isSupported()) {
         const hls = new Hls();
         hls.loadSource(channel.url);
@@ -157,35 +118,41 @@
         hls.on(Hls.Events.MANIFEST_PARSED, function () {
           videoPlayer.play();
         });
-      } else if (videoPlayer.canPlayType('application/vnd.apple.mpegurl')) {
+      } else if (videoPlayer.canPlayType("application/vnd.apple.mpegurl")) {
         videoPlayer.src = channel.url;
-        videoPlayer.addEventListener('canplay', function () {
+        videoPlayer.addEventListener("loadedmetadata", function () {
           videoPlayer.play();
         });
-      } else {
-        console.log('HLS is not supported on this device');
       }
-      currentChannelIndex = index;
     }
 
-    // Function to move up in the channel list
-    document.getElementById('upButton').onclick = function () {
-      if (currentChannelIndex > 0) {
-        currentChannelIndex--;
-        playChannel(currentChannelIndex);
+    function renderChannels() {
+      channelList.innerHTML = "";
+      channelsData.forEach((channel, index) => {
+        const channelElement = document.createElement("div");
+        channelElement.classList.add("channel");
+        channelElement.textContent = channel.name;
+        channelElement.onclick = () => loadChannel(index);
+        channelList.appendChild(channelElement);
+      });
+    }
+
+    upButton.onclick = function() {
+      if (currentIndex > 0) {
+        currentIndex--;
+        loadChannel(currentIndex);
       }
     };
 
-    // Function to move down in the channel list
-    document.getElementById('downButton').onclick = function () {
-      if (currentChannelIndex < channels.length - 1) {
-        currentChannelIndex++;
-        playChannel(currentChannelIndex);
+    downButton.onclick = function() {
+      if (currentIndex < channelsData.length - 1) {
+        currentIndex++;
+        loadChannel(currentIndex);
       }
     };
 
-    // Initial population of channels and setup
-    populateChannels();
+    renderChannels();
+    loadChannel(currentIndex);
   </script>
 </body>
 </html>
